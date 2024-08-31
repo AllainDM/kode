@@ -102,14 +102,19 @@ def test():
 
 
 @app.post("/add_notes")
-def add_notes(notes: str):
+def add_notes(notes: str, user: User = Depends(oauth2_dep)):
+    print("Эндпоинт добавления новой заметки.")
+    print(f"get_notes: user: {user}")
+    print(f"get_notes: type(user): {type(user)}")
+    new_note = user_data.add_user_notes(notes, user)
     print(f"Полученная заметка: {notes}")
-    return "ok"
+    return new_note
 
 
 @app.get("/get_notes")
 def get_notes(user: User = Depends(oauth2_dep)):
     print(f"get_notes: user: {user}")
+    print(f"get_notes: type(user): {type(user)}")
     notes = user_data.get_user_notes(user)
     return notes
 

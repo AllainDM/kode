@@ -103,3 +103,19 @@ def get_user_notes(user: str):
         return None
     notes = dbase.get_all_notes_user(login)
     return notes
+
+def add_user_notes(note: str, user: str):
+    """Добавление заметки польвателя"""
+    print("Добавление заметки польвателя")
+    # Найдем пользователя
+    login = get_jwt_username(user)
+    print(f"get_user_notes: login: {login}")
+    conn = maindb.connect_db()
+    dbase = FDataBase(conn)
+    # user = dbase.get_user_by_login(login)
+    if not user:
+        print("Пользователь не обнаружен.")
+        return None
+    new_note = dbase.add_note(note, login)
+    # Сразу вернем обратно добавленную заметку
+    return new_note
