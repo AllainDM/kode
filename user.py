@@ -26,6 +26,7 @@ def get_hash(passw: str) -> str:
     print(f"Хеш пароля: {pwd_context.hash(passw)}")
     return pwd_context.hash(passw)
 
+
 def get_jwt_username(token: str) -> str | None:
     """Возврат логина пользователя из JWT"""
     print(f"Определение имени пользователя")
@@ -38,6 +39,7 @@ def get_jwt_username(token: str) -> str | None:
     except:
         return None
     return username
+
 
 def get_jwt_admin(token: str) -> str | None:
     """Возврат логина пользователя из JWT"""
@@ -80,6 +82,7 @@ def auth_user(login: str, passw: str):
     # Если все ок вернем логин в словаре.
     return {"login": user[1]}
 
+
 def create_access_token(data: dict, expires: timedelta | None = None):
     """Возвращение токена доступа JWT"""
     src = data.copy()
@@ -89,6 +92,7 @@ def create_access_token(data: dict, expires: timedelta | None = None):
     src.update({"exp": now + expires})
     encode_jwt = jwt.encode(src, config.SECRET_KEY, algorithm=ALGORITHM)
     return encode_jwt
+
 
 def get_user_notes(user: str):
     """Получение всех заметок польвателя"""
@@ -103,6 +107,7 @@ def get_user_notes(user: str):
         return None
     notes = dbase.get_all_notes_user(login)
     return notes
+
 
 def add_user_notes(note: str, user: str):
     """Добавление заметки польвателя"""

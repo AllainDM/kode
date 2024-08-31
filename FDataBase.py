@@ -2,6 +2,7 @@ from datetime import datetime
 
 
 class FDataBase:
+
     def __init__(self, db):
         self.__db = db
         self.__cur = db.cursor()
@@ -9,7 +10,8 @@ class FDataBase:
     # Поиск пользователя по логину, необходимо для аутенфикации
     def get_user_by_login(self, login):
         try:
-            self.__cur.execute(f"SELECT * FROM users WHERE login = '{login}' LIMIT 1")
+            self.__cur.execute(
+                f"SELECT * FROM users WHERE login = '{login}' LIMIT 1")
             res = self.__cur.fetchone()
             if not res:
                 print("Пользователь не найден 1.")
@@ -25,7 +27,8 @@ class FDataBase:
     # Простой способ определения прав админа
     def get_admin(self, login: str):
         try:
-            self.__cur.execute(f"SELECT * FROM users WHERE login = '{login}' LIMIT 1")
+            self.__cur.execute(
+                f"SELECT * FROM users WHERE login = '{login}' LIMIT 1")
             res = self.__cur.fetchone()
             if not res:
                 print("Пользователь не найден 2.")
@@ -75,7 +78,8 @@ class FDataBase:
         # Заметки хранятся по ид пользователей. Необходимо запросить ид по логину.
         user = self.get_user_by_login(login)
         try:
-            self.__cur.execute(f"SELECT text FROM notes where user_id = {user[0]}")
+            self.__cur.execute(
+                f"SELECT text FROM notes where user_id = {user[0]}")
             res = self.__cur.fetchall()
             if not res:
                 print("Заметки не найдены 2.")
@@ -92,9 +96,9 @@ class FDataBase:
         # Заметки хранятся по ид пользователей. Необходимо получить ид по логину.
         user = self.get_user_by_login(login)
         try:
-            self.__cur.execute("INSERT INTO notes (user_id, text, active) "
-                   "VALUES (%s, %s, %s)",
-                   (user[0], note, 1))
+            self.__cur.execute(
+                "INSERT INTO notes (user_id, text, active) "
+                "VALUES (%s, %s, %s)", (user[0], note, 1))
             print("Запись добавлена")
             self.__db.commit()
             return note
@@ -102,7 +106,3 @@ class FDataBase:
             print("Ошибка добавления заметки в БД", _ex)
 
         return False
-
-
-
-

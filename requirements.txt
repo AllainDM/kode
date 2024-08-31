@@ -3,3 +3,5 @@ fastapi~=0.112.2
 passlib
 python-jose
 python-multipart
+pyaspeller
+yapf
