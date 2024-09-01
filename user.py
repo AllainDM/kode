@@ -22,14 +22,14 @@ class User(BaseModel):
 
 def get_hash(passw: str) -> str:
     """Возврат хеша пароля."""
-    print("Попытка захешировать пароль.")
-    print(f"Хеш пароля: {pwd_context.hash(passw)}")
+    # print("Попытка захешировать пароль.")
+    # print(f"Хеш пароля: {pwd_context.hash(passw)}")
     return pwd_context.hash(passw)
 
 
 def get_jwt_username(token: str) -> str | None:
     """Возврат логина пользователя из JWT"""
-    print(f"Определение имени пользователя")
+    print(f"Определение имени пользователя.")
     try:
         payload = jwt.decode(token, config.SECRET_KEY, algorithms=ALGORITHM)
         print(f"payload {payload}")
@@ -43,7 +43,7 @@ def get_jwt_username(token: str) -> str | None:
 
 def get_jwt_admin(token: str) -> str | None:
     """Возврат логина пользователя из JWT"""
-    print(f"Определение прав пользователя")
+    print(f"Определение прав пользователя.")
     # Найдем пользователя в БД
     conn = maindb.connect_db()
     dbase = FDataBase(conn)
@@ -53,8 +53,8 @@ def get_jwt_admin(token: str) -> str | None:
             return None
     except:
         return None
+    # БД возвращает булевое значение после проверки прав администратора.
     admin = dbase.get_admin(login)
-    print(f"admin {admin}")
     if admin:
         print("Текущий пользователь имеет права администратора.")
     return admin
@@ -66,16 +66,16 @@ def verify_password(passw: str, hash1: str) -> bool:
 
 
 def auth_user(login: str, passw: str):
-    """Аутенфикация пользователя"""
-    # Найдем пользователя в БД
+    """Аутенфикация пользователя."""
+    # Найдем пользователя в БД.
     conn = maindb.connect_db()
     dbase = FDataBase(conn)
     user = dbase.get_user_by_login(login)
     if not user:
         print("Пользователь не обнаружен.")
         return None
-    # Для сверки достанем хеш из user[2] это готовая запись хеша пароля в БД
-    print(f"user[2] {user[2]}")
+    # Для сверки достанем хеш из user[2] это готовая запись хеша пароля в БД.
+    # print(f"user[2] {user[2]}")
     if not verify_password(passw, user[2]):
         print("Ошибка сверки пароля.")
         return None
@@ -84,9 +84,10 @@ def auth_user(login: str, passw: str):
 
 
 def create_access_token(data: dict, expires: timedelta | None = None):
-    """Возвращение токена доступа JWT"""
+    """Возвращение токена доступа JWT."""
     src = data.copy()
     now = datetime.utcnow()
+    # Проверка срока токена отключена.
     # if not expires:
     expires = timedelta(minutes=15)
     src.update({"exp": now + expires})
@@ -95,32 +96,34 @@ def create_access_token(data: dict, expires: timedelta | None = None):
 
 
 def get_user_notes(user: str):
-    """Получение всех заметок польвателя"""
+    """Получение всех заметок польвателя."""
     # Найдем пользователя
     login = get_jwt_username(user)
-    print(f"get_user_notes: login: {login}")
+    # print(f"get_user_notes: login: {login}")
     conn = maindb.connect_db()
     dbase = FDataBase(conn)
     # user = dbase.get_user_by_login(login)
     if not user:
         print("Пользователь не обнаружен.")
         return None
+    # Запросим список заметок уже у БД, передав пользователя как аргумент.
     notes = dbase.get_all_notes_user(login)
     return notes
 
 
 def add_user_notes(note: str, user: str):
-    """Добавление заметки польвателя"""
-    print("Добавление заметки польвателя")
+    """Добавление заметки польвателя."""
+    # print("Добавление заметки польвателя.")
     # Найдем пользователя
     login = get_jwt_username(user)
-    print(f"get_user_notes: login: {login}")
+    # print(f"get_user_notes: login: {login}")
     conn = maindb.connect_db()
     dbase = FDataBase(conn)
     # user = dbase.get_user_by_login(login)
     if not user:
         print("Пользователь не обнаружен.")
         return None
+    # Помимо самой заметки передадим пользователя для привязки его ид.
     new_note = dbase.add_note(note, login)
     # Сразу вернем обратно добавленную заметку
     return new_note

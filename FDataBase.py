@@ -99,7 +99,7 @@ class FDataBase:
             self.__cur.execute(
                 "INSERT INTO notes (user_id, text, active) "
                 "VALUES (%s, %s, %s)", (user[0], note, 1))
-            print("Запись добавлена")
+            print("Заметка добавлена.")
             self.__db.commit()
             return note
         except Exception as _ex:
