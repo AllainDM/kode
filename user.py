@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 from pydantic import BaseModel
 
 from passlib.context import CryptContext
-from typing_extensions import deprecated
+# from typing_extensions import deprecated
 # import jose
 from jose import jwt
 

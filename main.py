@@ -11,8 +11,8 @@ from pyaspeller import YandexSpeller
 # import psycopg2
 
 import config
-import maindb
-from FDataBase import FDataBase
+# import maindb
+# from FDataBase import FDataBase
 import user as user_data
 from user import User
 
@@ -56,34 +56,34 @@ async def create_access_loken(
 @app.get("/token")
 def get_access_token(token: str = Depends(oauth2_dep)) -> dict:
     """Возврат текущего токена доступа"""
-    user_login = user_data.get_jwt_username(token)
-    user_admin = user_data.get_jwt_admin(token)
-    print(f"user_login {user_login}")
+    # user_login = user_data.get_jwt_username(token)
+    # user_admin = user_data.get_jwt_admin(token)
+    # print(f"user_login {user_login}")
     return {"token": token}
 
 
-@app.get("/protected")
-def protected_route(user: User = Depends(oauth2_dep)):
-    print("Защищенный эндпоинт")
-    # admin = user_data.get_jwt_admin(user)
-    return user
+# @app.get("/protected")
+# def protected_route(user: User = Depends(oauth2_dep)):
+#     print("Защищенный эндпоинт")
+#     # admin = user_data.get_jwt_admin(user)
+#     return user
 
 
-# Тестовый вывод пользователей и заметок
-def print_users():
-    print(f"Запуск функции вывода списка пользователей.")
-    conn = maindb.connect_db()
-    dbase = FDataBase(conn)
-    users = dbase.get_all_user()
-    print(users)
-
-
-def print_notes():
-    print(f"Запуск функции вывода списка заметок.")
-    conn = maindb.connect_db()
-    dbase = FDataBase(conn)
-    notes = dbase.get_all_notes()
-    print(notes)
+# # Тестовый вывод пользователей и заметок
+# def print_users():
+#     print(f"Запуск функции вывода списка пользователей.")
+#     conn = maindb.connect_db()
+#     dbase = FDataBase(conn)
+#     users = dbase.get_all_user()
+#     print(users)
+#
+#
+# def print_notes():
+#     print(f"Запуск функции вывода списка заметок.")
+#     conn = maindb.connect_db()
+#     dbase = FDataBase(conn)
+#     notes = dbase.get_all_notes()
+#     print(notes)
 
 
 @app.post("/auth")
@@ -93,12 +93,12 @@ def auth(login: str, passw: str):
     print(f"user: {user}")
 
 
-@app.get("/")
-def test():
-    print(f"Запуск эндпоинта вывода списка пользователей и заметок.")
-    print_users()
-    print_notes()
-    return "ok"
+# @app.get("/")
+# def test():
+#     print(f"Запуск эндпоинта вывода списка пользователей и заметок.")
+#     print_users()
+#     print_notes()
+#     return "ok"
 
 
 @app.post("/add_notes")
@@ -126,4 +126,4 @@ def get_notes(user: User = Depends(oauth2_dep)):
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
-    print_users()
+    # print_users()

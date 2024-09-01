@@ -1,7 +1,8 @@
-uvicorn~=0.30.6
-fastapi~=0.112.2
-passlib
-python-jose
-python-multipart
-pyaspeller
-yapf
+fastapi==0.112.2
+passlib==1.7.4
+pyaspeller==2.0.0
+python-jose==3.3.0
+python-multipart==0.0.9
+uvicorn==0.30.6
+yapf==0.40.2
+psycopg2==2.9.9
