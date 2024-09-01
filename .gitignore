@@ -3,4 +3,4 @@ __pycache__
 venv
 
 # Конфиг
-config.py
+#config.py
